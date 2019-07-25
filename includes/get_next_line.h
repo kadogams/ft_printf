@@ -1,40 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skadogam <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/12 14:23:04 by skadogam          #+#    #+#             */
-/*   Updated: 2018/07/04 15:38:51 by skadogam         ###   ########.fr       */
+/*   Created: 2018/08/02 15:59:37 by skadogam          #+#    #+#             */
+/*   Updated: 2018/10/16 15:28:51 by skadogam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int		ft_wstrlen(const wchar_t *ws)
+# include "libft.h"
+
+# define BUFF_SIZE 256
+
+typedef struct s_dlist	t_dlist;
+
+typedef struct	s_line
 {
-	int	count;
+	int				fd;
+	size_t			eol;
+	size_t			save;
+	t_dlist			*buff;
+	struct s_line	*prev;
+	struct s_line	*next;
+}				t_line;
 
-	count = 0;
-	while (*ws)
-	{
-		if (*ws >= 0 && !(*ws >= 0xd800 && *ws <= 0xdfff))
-		{
-			if (*ws < 0x80)
-				count++;
-			else if (*ws < 0x800)
-				count += 2;
-			else if (*ws < 0x10000)
-				count += 3;
-			else if (*ws < 0x110000)
-				count += 4;
-			else
-				return (-1);
-		}
-		else
-			return (-1);
-		ws++;
-	}
-	return (count);
-}
+int				get_next_line(const int fd, char **line);
+int				get_next_line_v2(const int fd, char **line, int write);
+
+#endif
